@@ -1,0 +1,30 @@
+{
+  "name": "unlock-contracts",
+  "version": "0.0.1",
+  "description": "Using Unlock-Protocol to monetize smart-contracts.",
+  "scripts": {
+    "ganache": "ganache-cli",
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HardlyDifficult/unlock-contracts.git"
+  },
+  "keywords": [
+    "Unlock-Protocol",
+    "Ethereum",
+    "ETH"
+  ],
+  "author": "HardlyDifficult",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HardlyDifficult/unlock-contracts/issues"
+  },
+  "homepage": "https://github.com/HardlyDifficult/unlock-contracts#readme",
+  "dependencies": {
+    "ganache-cli": "6.5.0",
+    "truffle": "5.0.28",
+    "truffle-assertions": "0.9.1",
+    "unlock-abi-1-1": "1.0.0"
+  }
+}
