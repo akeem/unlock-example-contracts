@@ -1,5 +1,4 @@
 const truffleAssert = require("truffle-assertions");
-const deployUnlock = require("./helpers/deployUnlock");
 const createLock = require("./helpers/createLock");
 
 const MutableLock = artifacts.require("MutableLock");
@@ -13,14 +12,13 @@ contract("MutableLock", accounts => {
 
   before(async () => {
     const unlockOwner = accounts[9];
-    const unlock = await deployUnlock(unlockOwner);
     lock = await createLock(
-      unlock,
       60 * 60 * 24, // expirationDuration (in seconds) of 1 day
       web3.utils.padLeft(0, 40), // tokenAddress for ETH
       web3.utils.toWei("0.01", "ether"), // keyPrice
       100, // maxNumberOfKeys
       "Test Lock", // lockName
+      unlockOwner,
       lockOwner
     );
 
