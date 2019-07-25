@@ -1,10 +1,11 @@
-const truffleAssert = require("truffle-assertions");
+const BigNumber = require("bignumber.js");
+
 const deployUnlock = require("./helpers/deployUnlock");
 const createLock = require("./helpers/createLock");
 
-const PaidOnlyFeature = artifacts.require("PaidOnlyFeature");
+const DiceRoleModifier = artifacts.require("DiceRoleModifier");
 
-contract("PaidOnlyFeature", accounts => {
+contract("DiceRoleModifier", accounts => {
   const lockOwner = accounts[0];
   const keyOwner = accounts[1];
   const nonKeyOwner = accounts[2];
@@ -31,22 +32,28 @@ contract("PaidOnlyFeature", accounts => {
       gas: 6700000
     });
 
-    featureContract = await PaidOnlyFeature.new(lock._address);
+    featureContract = await DiceRoleModifier.new(lock._address);
   });
 
-  it("Key owner can call the function", async () => {
-    await featureContract.paidOnlyFeature({
-      from: keyOwner
-    });
+  it("Key owner always rolls 3-22 (inclusive)", async () => {
+    for (let i = 0; i < 100; i++) {
+      const tx = await featureContract.rollDie({
+        from: keyOwner
+      });
+      const lastRoll = new BigNumber(tx.receipt.logs[0].args.value);
+      assert(lastRoll.gte(3));
+      assert(lastRoll.lte(22));
+    }
   });
 
-  it("A call from a non-key owning account will revert", async () => {
-    await truffleAssert.fails(
-      featureContract.paidOnlyFeature({
+  it("All other accounts roll 1-20 (inclusive)", async () => {
+    for (let i = 0; i < 100; i++) {
+      const tx = await featureContract.rollDie({
         from: nonKeyOwner
-      }),
-      truffleAssert.ErrorType.REVERT,
-      "Purchase a key first!"
-    );
+      });
+      const lastRoll = new BigNumber(tx.receipt.logs[0].args.value);
+      assert(lastRoll.gte(1));
+      assert(lastRoll.lte(20));
+    }
   });
 });

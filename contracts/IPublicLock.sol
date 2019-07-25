@@ -6,5 +6,5 @@ pragma solidity ^0.5.0;
  */
 interface IPublicLock
 {
-  function getHasValidKey(address _account) external returns (bool);
+  function getHasValidKey(address _account) external view returns (bool);
 }
