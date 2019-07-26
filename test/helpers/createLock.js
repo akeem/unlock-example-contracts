@@ -1,4 +1,4 @@
-const unlockAbi = require("unlock-abi-1-1");
+const { constants, protocols } = require("hardlydifficult-test-helpers");
 
 module.exports = async function(
   expirationDuration,
@@ -9,19 +9,8 @@ module.exports = async function(
   unlockOwner,
   lockOwner
 ) {
-  // For testing locally, we deploy a new Unlock contract
-  const unlockContract = new web3.eth.Contract(unlockAbi.Unlock.abi);
-  const unlock = await unlockContract
-    .deploy({
-      data: unlockAbi.Unlock.bytecode
-    })
-    .send({
-      from: unlockOwner,
-      gas: 6700000
-    });
-
-  // And use that to create a new Lock
-  const tx = await unlock.methods
+  const unlockProtocol = await protocols.unlock.deploy(web3, unlockOwner);
+  const tx = await unlockProtocol.methods
     .createLock(
       expirationDuration,
       tokenAddress,
@@ -31,12 +20,10 @@ module.exports = async function(
     )
     .send({
       from: lockOwner,
-      gas: 6700000
+      gas: constants.MAX_GAS
     });
 
-  const lock = new web3.eth.Contract(
-    unlockAbi.PublicLock.abi,
+  return protocols.unlock.getLock(
     tx.events.NewLock.returnValues.newLockAddress
   );
-  return lock;
 };
