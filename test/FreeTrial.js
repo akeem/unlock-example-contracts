@@ -1,7 +1,7 @@
+const { constants, protocols } = require("hardlydifficult-test-helpers");
 const { time } = require("openzeppelin-test-helpers");
 
 const truffleAssert = require("truffle-assertions");
-const createLock = require("./helpers/createLock");
 
 const FreeTrial = artifacts.require("FreeTrial");
 
@@ -14,14 +14,22 @@ contract("DiceRoleModifier", accounts => {
 
   before(async () => {
     const unlockOwner = accounts[9];
-    lock = await createLock(
-      60 * 60 * 24, // expirationDuration (in seconds) of 1 day
-      web3.utils.padLeft(0, 40), // tokenAddress for ETH
-      web3.utils.toWei("0.01", "ether"), // keyPrice
-      100, // maxNumberOfKeys
-      "Test Lock", // lockName
-      unlockOwner,
-      lockOwner
+    const unlockProtocol = await protocols.unlock.deploy(web3, unlockOwner);
+    const tx = await unlockProtocol.methods
+      .createLock(
+        60 * 60 * 24, // expirationDuration (in seconds) of 1 day
+        web3.utils.padLeft(0, 40), // tokenAddress for ETH
+        web3.utils.toWei("0.01", "ether"), // keyPrice
+        100, // maxNumberOfKeys
+        "Test Lock" // lockName
+      )
+      .send({
+        from: lockOwner,
+        gas: constants.MAX_GAS
+      });
+
+    lock = protocols.unlock.getLock(
+      tx.events.NewLock.returnValues.newLockAddress
     );
 
     // Buy a key from the `keyOwner` account
