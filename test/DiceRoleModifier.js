@@ -1,4 +1,4 @@
-const { constants, protocols } = require("hardlydifficult-test-helpers");
+const { protocols } = require("hardlydifficult-test-helpers");
 const BigNumber = require("bignumber.js");
 
 const DiceRoleModifier = artifacts.require("DiceRoleModifier");
@@ -13,31 +13,26 @@ contract("DiceRoleModifier", accounts => {
   beforeEach(async () => {
     const unlockOwner = accounts[9];
     const unlockProtocol = await protocols.unlock.deploy(web3, unlockOwner);
-    const tx = await unlockProtocol.methods
-      .createLock(
-        60 * 60 * 24, // expirationDuration (in seconds) of 1 day
-        web3.utils.padLeft(0, 40), // tokenAddress for ETH
-        web3.utils.toWei("0.01", "ether"), // keyPrice
-        100, // maxNumberOfKeys
-        "Test Lock" // lockName
-      )
-      .send({
-        from: lockOwner,
-        gas: constants.MAX_GAS
-      });
-
-    lock = protocols.unlock.getLock(
-      tx.events.NewLock.returnValues.newLockAddress
+    const tx = await unlockProtocol.createLock(
+      60 * 60 * 24, // expirationDuration (in seconds) of 1 day
+      web3.utils.padLeft(0, 40), // tokenAddress for ETH
+      web3.utils.toWei("0.01", "ether"), // keyPrice
+      100, // maxNumberOfKeys
+      "Test Lock", // lockName
+      {
+        from: lockOwner
+      }
     );
 
+    lock = await protocols.unlock.getLock(web3, tx.logs[1].args.newLockAddress);
+
     // Buy a key from the `keyOwner` account
-    await lock.methods.purchaseFor(keyOwner).send({
+    await lock.purchaseFor(keyOwner, {
       from: keyOwner,
-      value: await lock.methods.keyPrice().call(),
-      gas: constants.MAX_GAS
+      value: await lock.keyPrice()
     });
 
-    featureContract = await DiceRoleModifier.new(lock._address);
+    featureContract = await DiceRoleModifier.new(lock.address);
   });
 
   it("Key owner always rolls 3-22 (inclusive)", async () => {
