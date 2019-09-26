@@ -9,7 +9,7 @@ import './IPublicLock.sol';
 contract FreeTrial
 {
   IPublicLock public lock;
-  mapping(address => uint256) accountToLastUse;
+  mapping(address => uint256) public accountLastUse;
 
   constructor(IPublicLock _lockAddress) public
   {
@@ -20,9 +20,9 @@ contract FreeTrial
   {
     if(!lock.getHasValidKey(msg.sender))
     {
-      require(accountToLastUse[msg.sender] + 24 hours < block.timestamp, 'Limited to one call per day, unless you purchase a Key!');
+      require(accountLastUse[msg.sender] + 24 hours < block.timestamp, 'Limited to one call per day, unless you purchase a Key!');
     }
-    accountToLastUse[msg.sender] = block.timestamp;
+    accountLastUse[msg.sender] = block.timestamp;
     // Then implement your feature as normal
   }
 }
