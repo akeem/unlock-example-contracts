@@ -36,7 +36,7 @@
     "openzeppelin-test-helpers": "0.4.3",
     "prettier": "1.18.2",
     "solium": "1.2.5",
-    "truffle": "5.0.37",
+    "truffle": "5.0.38",
     "truffle-assertions": "0.9.1"
   }
 }
