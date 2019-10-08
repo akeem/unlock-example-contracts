@@ -1,4 +1,4 @@
-const { protocols } = require("hardlydifficult-test-helpers");
+const { protocols } = require("hardlydifficult-ethereum-contracts");
 const truffleAssert = require("truffle-assertions");
 
 const PaidOnlyFeature = artifacts.require("PaidOnlyFeature");

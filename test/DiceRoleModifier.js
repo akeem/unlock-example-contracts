@@ -1,4 +1,4 @@
-const { protocols } = require("hardlydifficult-test-helpers");
+const { protocols } = require("hardlydifficult-ethereum-contracts");
 const BigNumber = require("bignumber.js");
 
 const DiceRoleModifier = artifacts.require("DiceRoleModifier");

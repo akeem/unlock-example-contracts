@@ -1,4 +1,4 @@
-const { protocols } = require("hardlydifficult-test-helpers");
+const { protocols } = require("hardlydifficult-ethereum-contracts");
 const { time } = require("openzeppelin-test-helpers");
 
 const truffleAssert = require("truffle-assertions");
