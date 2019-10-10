@@ -1,7 +1,8 @@
 pragma solidity ^0.5.0;
 
-import './IPublicLock.sol';
+import 'hardlydifficult-ethereum-contracts/contracts/interfaces/IPublicLock.sol';
 import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
+
 
 /**
  * An example where the Lock used may be changed (or removed) by the owner.

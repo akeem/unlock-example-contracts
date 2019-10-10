@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0;
 
-import './IPublicLock.sol';
+import 'hardlydifficult-ethereum-contracts/contracts/interfaces/IPublicLock.sol';
+
 
 /**
  * An example of a free trial, allowing any account to issue up to 1 tx per day.

@@ -6,27 +6,20 @@ const truffleAssert = require("truffle-assertions");
 const FreeTrial = artifacts.require("FreeTrial");
 
 contract("DiceRoleModifier", accounts => {
-  const lockOwner = accounts[0];
   const keyOwner = accounts[1];
   const nonKeyOwner = accounts[2];
   let lock;
   let featureContract;
 
   before(async () => {
-    const unlockOwner = accounts[9];
-    const unlockProtocol = await protocols.unlock.deploy(web3, unlockOwner);
-    const tx = await unlockProtocol.createLock(
-      60 * 60 * 24, // expirationDuration (in seconds) of 1 day
-      web3.utils.padLeft(0, 40), // tokenAddress for ETH
-      web3.utils.toWei("0.01", "ether"), // keyPrice
-      100, // maxNumberOfKeys
-      "Test Lock", // lockName
+    lock = await protocols.unlock.createTestLock(
+      web3,
+      accounts[9], // Unlock Protocol owner
+      accounts[1], // Lock owner
       {
-        from: lockOwner
+        keyPrice: web3.utils.toWei("0.01", "ether")
       }
     );
-
-    lock = await protocols.unlock.getLock(web3, tx.logs[1].args.newLockAddress);
 
     // Buy a key from the `keyOwner` account
     await lock.purchaseFor(keyOwner, {

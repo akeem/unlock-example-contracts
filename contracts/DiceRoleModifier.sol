@@ -1,6 +1,7 @@
 pragma solidity ^0.5.0;
 
-import './IPublicLock.sol';
+import 'hardlydifficult-ethereum-contracts/contracts/interfaces/IPublicLock.sol';
+
 
 /**
  * An example improving odds for those that purchased a key.

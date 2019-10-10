@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "Using Unlock-Protocol to monetize smart-contracts.",
   "scripts": {
+    "build": "npm run compile",
+    "compile": "truffle compile",
     "test": "truffle test",
     "lint": "solium -d contracts --fix && eslint . --fix",
     "lintNoFix": "solium -d contracts && eslint ."
@@ -31,7 +33,7 @@
     "eslint-plugin-json": "1.4.0",
     "eslint-plugin-markdown": "1.0.0",
     "eslint-plugin-prettier": "3.1.1",
-    "hardlydifficult-ethereum-contracts": "0.5.1",
+    "hardlydifficult-ethereum-contracts": "^0.5.4",
     "openzeppelin-solidity": "2.3.0",
     "openzeppelin-test-helpers": "0.4.3",
     "prettier": "1.18.2",
