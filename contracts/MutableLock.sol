@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
 import 'hardlydifficult-ethereum-contracts/contracts/interfaces/IPublicLock.sol';
-import 'openzeppelin-solidity/contracts/ownership/Ownable.sol';
+import '@openzeppelin/contracts/ownership/Ownable.sol';
 
 
 /**
