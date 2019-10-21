@@ -1,13 +1,14 @@
 pragma solidity ^0.5.0;
 
 import 'hardlydifficult-ethereum-contracts/contracts/interfaces/IPublicLock.sol';
+import "@openzeppelin/contracts/ownership/Ownable.sol";
 import '@openzeppelin/contracts/access/roles/WhitelistedRole.sol';
 import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
 
 
 /**
  */
-contract ExternalRefund is WhitelistedRole
+contract ExternalRefund is Ownable, WhitelistedRole
 {
   IPublicLock public lock;
   mapping(address => bool) public refundee;
